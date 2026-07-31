@@ -76,7 +76,7 @@ export default async function handler(request) {
         key,
         filename: safeName,
         size: file.size,
-        url: `/api/pdfs/${encodeURIComponent(key)}`
+        url: `/api/pdfs?key=${encodeURIComponent(key)}`
       },
       201
     );
