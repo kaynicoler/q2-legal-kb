@@ -373,6 +373,23 @@ mark { background:#fef08a; padding:0 2px; border-radius:2px; }
 </div>
 
 <div id="toast-container"></div>
+<div class="pdf-import-modal" id="pdf-import-modal" onclick="if(event.target===this) closePdfImportDialog()">
+  <div class="pdf-import-card" role="dialog" aria-modal="true" aria-labelledby="pdf-import-title">
+    <div class="pdf-import-head"><h2 id="pdf-import-title">Import PDF</h2><p id="pdf-import-file-label">Choose how this document should open in the Knowledge Base.</p></div>
+    <div class="pdf-import-body">
+      <label class="pdf-choice"><span class="pdf-choice-row"><input type="radio" name="pdf-import-mode" value="html" checked><span><strong>Styled HTML Article</strong><small>Creates a searchable, editable article from the PDF text. Best for everyday reading.</small></span></span></label>
+      <label class="pdf-choice"><span class="pdf-choice-row"><input type="radio" name="pdf-import-mode" value="pdf"><span><strong>Preserve Original PDF</strong><small>Opens the original PDF in the article exactly as uploaded.</small></span></span></label>
+      <label class="pdf-keep-row"><input id="pdf-keep-original" type="checkbox" checked><span><strong>Keep the original PDF attached</strong><br>Recommended. Adds a View Original PDF button to the HTML article.</span></label>
+      <div class="pdf-import-fields">
+        <label>Page / Section<select id="pdf-import-section"></select></label>
+        <label>Category<input id="pdf-import-category" value="Imported PDFs"></label>
+        <label style="grid-column:1/-1">Article title<input id="pdf-import-article-title"></label>
+      </div>
+      <div class="pdf-import-status" id="pdf-import-status"></div>
+    </div>
+    <div class="pdf-import-foot"><button class="article-action-btn" onclick="closePdfImportDialog()">Cancel</button><button class="article-action-btn primary-word" id="pdf-import-submit" onclick="confirmPdfImport()">Import PDF</button></div>
+  </div>
+</div>
 <script>
 const DEFAULT_KB_ARTICLES = [
 
@@ -2822,25 +2839,7 @@ function buildArticleExportHtml(article) {
     .resource-card-tag,.qref-card-label { color:#777777; font-size:8pt; text-transform:uppercase; letter-spacing:.08em; margin-top:4pt; }
     img { max-width:100%; height:auto; }
   `;
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+escHtml(article.title)+'</title><style>'+style+'</style></head><body><div class="doc-page"><div class="doc-brand">Q2 Legal</div><div class="doc-kicker">'+escHtml(article.section || 'Q2 Legal Knowledge Base')+' · '+escHtml(article.category || '')+'</div><h1 class="doc-title">'+escHtml(article.title)+'</h1><div class="doc-meta"><strong>Type:</strong> '+escHtml(article.type || '')+' &nbsp; | &nbsp; <strong>Owner:</strong> '+escHtml(article.owner || '')+' &nbsp; | &nbsp; <strong>Updated:</strong> '+escHtml(article.updated || '')+'</div>'+exportContent+'</div>
-<div class="pdf-import-modal" id="pdf-import-modal" onclick="if(event.target===this) closePdfImportDialog()">
-  <div class="pdf-import-card" role="dialog" aria-modal="true" aria-labelledby="pdf-import-title">
-    <div class="pdf-import-head"><h2 id="pdf-import-title">Import PDF</h2><p id="pdf-import-file-label">Choose how this document should open in the Knowledge Base.</p></div>
-    <div class="pdf-import-body">
-      <label class="pdf-choice"><span class="pdf-choice-row"><input type="radio" name="pdf-import-mode" value="html" checked><span><strong>Styled HTML Article</strong><small>Creates a searchable, editable article from the PDF text. Best for everyday reading.</small></span></span></label>
-      <label class="pdf-choice"><span class="pdf-choice-row"><input type="radio" name="pdf-import-mode" value="pdf"><span><strong>Preserve Original PDF</strong><small>Opens the original PDF in the article exactly as uploaded.</small></span></span></label>
-      <label class="pdf-keep-row"><input id="pdf-keep-original" type="checkbox" checked><span><strong>Keep the original PDF attached</strong><br>Recommended. Adds a View Original PDF button to the HTML article.</span></label>
-      <div class="pdf-import-fields">
-        <label>Page / Section<select id="pdf-import-section"></select></label>
-        <label>Category<input id="pdf-import-category" value="Imported PDFs"></label>
-        <label style="grid-column:1/-1">Article title<input id="pdf-import-article-title"></label>
-      </div>
-      <div class="pdf-import-status" id="pdf-import-status"></div>
-    </div>
-    <div class="pdf-import-foot"><button class="article-action-btn" onclick="closePdfImportDialog()">Cancel</button><button class="article-action-btn primary-word" id="pdf-import-submit" onclick="confirmPdfImport()">Import PDF</button></div>
-  </div>
-</div>
-</body></html>';
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+escHtml(article.title)+'</title><style>'+style+'</style></head><body><div class="doc-page"><div class="doc-brand">Q2 Legal</div><div class="doc-kicker">'+escHtml(article.section || 'Q2 Legal Knowledge Base')+' · '+escHtml(article.category || '')+'</div><h1 class="doc-title">'+escHtml(article.title)+'</h1><div class="doc-meta"><strong>Type:</strong> '+escHtml(article.type || '')+' &nbsp; | &nbsp; <strong>Owner:</strong> '+escHtml(article.owner || '')+' &nbsp; | &nbsp; <strong>Updated:</strong> '+escHtml(article.updated || '')+'</div>'+exportContent+'</div></body></html>';
 }
 function downloadTextFile(filename, mimeType, text) {
   const blob = new Blob([text], { type: mimeType });
