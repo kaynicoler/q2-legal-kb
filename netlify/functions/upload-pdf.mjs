@@ -4,9 +4,9 @@ import crypto from "node:crypto";
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
 function json(data, status = 200) {
-  return Response.json(data, {
+  return new Response(JSON.stringify(data), {
     status,
-    headers: { "cache-control": "no-store" }
+    headers: { "content-type": "application/json", "cache-control": "no-store" }
   });
 }
 
@@ -48,8 +48,7 @@ export default async function handler(request) {
         contentType: "application/pdf",
         size: file.size,
         uploadedAt: new Date().toISOString()
-      },
-      onlyIfNew: true
+      }
     });
 
     return json({
