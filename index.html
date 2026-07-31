@@ -97,6 +97,8 @@ mark { background:#fef08a; padding:0 2px; border-radius:2px; }
 .article-toolbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; }
 .article-action-btn { border:1px solid var(--creamDark); background:var(--cream); color:var(--black); border-radius:var(--radius); padding:7px 10px; cursor:pointer; font-family:var(--sans); font-size:12px; }
 .article-action-btn:hover { background:var(--creamMid); }
+.visually-hidden-file { position:fixed !important; left:-10000px !important; top:auto !important; width:1px !important; height:1px !important; opacity:0 !important; pointer-events:none !important; }
+.topbar-right label.topbar-btn { display:inline-flex; align-items:center; cursor:pointer; }
 .pdf-import-note { background:var(--cream); border:1px solid var(--creamDark); border-radius:var(--radius); padding:10px 12px; margin-top:10px; font-size:12px; line-height:1.5; color:var(--gray); }
 
 .imported-guide-intro { background:linear-gradient(135deg,var(--cream),#fff); border:1px solid var(--creamDark); border-left:4px solid var(--black); border-radius:var(--radius); padding:16px 18px; margin:0 0 22px; color:var(--gray); font-size:15px; line-height:1.65; }
@@ -291,7 +293,7 @@ mark { background:#fef08a; padding:0 2px; border-radius:2px; }
 <body>
 <div class="topbar">
   <div class="topbar-brand" role="button" tabindex="0" title="Back to main landing page" onclick="goHome()" onkeydown="handleBrandKey(event)"><span class="wordmark">Q2 Legal</span><span class="divider"></span><span class="subtitle">Knowledge Base</span></div>
-  <div class="topbar-right"><span class="topbar-meta" id="topbar-date"></span><button class="topbar-btn" onclick="document.getElementById('import-word-file').click()">Import Word as New Article</button><button class="topbar-btn" onclick="document.getElementById('import-pdf-file').click()">Import PDF</button><button class="topbar-btn" onclick="document.getElementById('import-json-file').click()">Import JSON</button><button class="topbar-btn" onclick="exportKnowledgeBaseData()">Export JSON</button><button class="topbar-btn" onclick="openNewArticleEditor()">+ Article</button><button class="topbar-btn" onclick="toggleManagePanel()">Manage Content</button><input id="import-json-file" type="file" accept="application/json,.json" style="display:none" onchange="importKnowledgeBaseData(this.files[0]); this.value='';"><input id="import-pdf-file" type="file" accept="application/pdf,.pdf" style="display:none" onchange="openPdfImportDialog(this.files[0]); this.value='';"><input id="import-word-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="importWordAsArticle(this.files[0]); this.value='';"></div>
+  <div class="topbar-right"><span class="topbar-meta" id="topbar-date"></span><label class="topbar-btn" for="import-word-file" role="button" tabindex="0">Import Word as New Article</label><label class="topbar-btn" for="import-pdf-file" role="button" tabindex="0">Import PDF</label><label class="topbar-btn" for="import-json-file" role="button" tabindex="0">Import JSON</label><button class="topbar-btn" onclick="exportKnowledgeBaseData()">Export JSON</button><button class="topbar-btn" onclick="openNewArticleEditor()">+ Article</button><button class="topbar-btn" onclick="toggleManagePanel()">Manage Content</button><input id="import-json-file" class="visually-hidden-file" type="file" accept="application/json,.json"><input id="import-pdf-file" class="visually-hidden-file" type="file" accept="application/pdf,.pdf"><input id="import-word-file" class="visually-hidden-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div>
 </div>
 <main class="page">
   <section class="hero" id="hero">
@@ -307,7 +309,7 @@ mark { background:#fef08a; padding:0 2px; border-radius:2px; }
 
 <div class="article-view" id="article-view" onclick="handleArticleBackdrop(event)">
   <div class="article-shell">
-    <div class="article-header"><button class="close-btn" onclick="closeArticle()">Close</button><div class="article-breadcrumb" id="article-breadcrumb"></div><div class="article-title" id="article-title"></div><div class="article-meta-row" id="article-meta"></div><div class="article-toolbar"><button class="article-action-btn" onclick="openArticleEditor(currentArticleId)">Quick Edit</button><button class="article-action-btn danger" onclick="deleteCurrentArticle()">Delete Article</button><button class="article-action-btn primary-word" onclick="exportCurrentArticleToWord()">Export to Word</button><button class="article-action-btn primary-word" onclick="document.getElementById('replace-word-file').click()">Replace from Word</button><button class="article-action-btn" id="original-pdf-btn" style="display:none" onclick="openCurrentOriginalPdf()">View Original PDF</button><button class="article-action-btn" onclick="exportCurrentArticleToMarkdown()">Export Markdown</button><button class="article-action-btn" onclick="exportCurrentArticleToHtml()">Export HTML</button><button class="article-action-btn" onclick="exportCurrentArticleToPdf()">Print / Save PDF</button><input id="replace-word-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="replaceCurrentArticleFromWord(this.files[0]); this.value='';"></div><div class="word-workflow-note"><strong>Recommended for full guides:</strong> Export to Word, edit in Word, save as <strong>.docx</strong>, then use <strong>Replace from Word</strong>. Word formatting like bold, italics, underline, color/highlight, links, tables, screenshots, and numbered steps will be preserved where possible. Use Quick Edit only for small fixes.</div></div>
+    <div class="article-header"><button class="close-btn" onclick="closeArticle()">Close</button><div class="article-breadcrumb" id="article-breadcrumb"></div><div class="article-title" id="article-title"></div><div class="article-meta-row" id="article-meta"></div><div class="article-toolbar"><button class="article-action-btn" onclick="openArticleEditor(currentArticleId)">Quick Edit</button><button class="article-action-btn danger" onclick="deleteCurrentArticle()">Delete Article</button><button class="article-action-btn primary-word" onclick="exportCurrentArticleToWord()">Export to Word</button><button class="article-action-btn primary-word" onclick="document.getElementById('replace-word-file').click()">Replace from Word</button><button class="article-action-btn" id="original-pdf-btn" style="display:none" onclick="openCurrentOriginalPdf()">View Original PDF</button><button class="article-action-btn" onclick="exportCurrentArticleToMarkdown()">Export Markdown</button><button class="article-action-btn" onclick="exportCurrentArticleToHtml()">Export HTML</button><button class="article-action-btn" onclick="exportCurrentArticleToPdf()">Print / Save PDF</button><input id="replace-word-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none"></div><div class="word-workflow-note"><strong>Recommended for full guides:</strong> Export to Word, edit in Word, save as <strong>.docx</strong>, then use <strong>Replace from Word</strong>. Word formatting like bold, italics, underline, color/highlight, links, tables, screenshots, and numbered steps will be preserved where possible. Use Quick Edit only for small fixes.</div></div>
     <div class="article-content" id="article-body"></div>
   </div>
 </div>
@@ -4081,6 +4083,29 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function escRegex(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function escJs(s) { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 function toast(msg, emoji='✓') { const el=document.createElement('div'); el.className='toast'; el.innerHTML='<span>'+emoji+'</span> '+escHtml(msg); document.getElementById('toast-container').appendChild(el); setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .4s'; setTimeout(()=>el.remove(),400); },2400); }
+
+function initializeFileImportControls() {
+  const bind = (id, handler) => {
+    const input = document.getElementById(id);
+    if (!input || input.dataset.bound === 'true') return;
+    input.dataset.bound = 'true';
+    input.addEventListener('change', async function () {
+      const file = this.files && this.files[0];
+      if (!file) return;
+      try { await handler(file); }
+      catch (error) {
+        console.error(id + ' failed:', error);
+        toast('Import error: ' + (error && error.message ? error.message : String(error)), '⚠');
+      } finally { this.value = ''; }
+    });
+  };
+  bind('import-pdf-file', file => openPdfImportDialog(file));
+  bind('import-word-file', file => importWordAsArticle(file));
+  bind('import-json-file', file => importKnowledgeBaseData(file));
+  bind('replace-word-file', file => replaceCurrentArticleFromWord(file));
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initializeFileImportControls);
+else initializeFileImportControls();
 </script>
 </body>
 </html>
