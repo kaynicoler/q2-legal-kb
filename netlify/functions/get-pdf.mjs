@@ -9,19 +9,19 @@ function text(message, status) {
   });
 }
 
-export default async function handler(request, context) {
+export default async function handler(request) {
   if (request.method !== "GET" && request.method !== "HEAD") {
     return text("Method not allowed.", 405);
   }
 
   try {
-    const encodedKey = context.params?.splat;
+    const url = new URL(request.url);
+    const key = url.searchParams.get("key");
 
-    if (!encodedKey) {
+    if (!key) {
       return text("PDF key is required.", 400);
     }
 
-    const key = decodeURIComponent(encodedKey);
     const store = getStore("kb-pdfs");
 
     const result = await store.getWithMetadata(key, {
@@ -37,9 +37,11 @@ export default async function handler(request, context) {
       result.metadata?.filename ||
       "document.pdf";
 
+    const safeFilename = filename.replace(/["\r\n]/g, "");
+
     const headers = {
       "content-type": "application/pdf",
-      "content-disposition": `inline; filename="${filename.replace(/"/g, "")}"`,
+      "content-disposition": `inline; filename="${safeFilename}"`,
       "cache-control": "private, max-age=300",
       "x-content-type-options": "nosniff"
     };
