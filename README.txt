@@ -1,15 +1,12 @@
-Q2 Legal Knowledge Base - repaired hybrid PDF import build
+Q2 Legal Knowledge Base - Hybrid PDF Import
 
-Replace the files in the root of the GitHub repository with this package.
-Important: index.html and app.js must both be uploaded. The application JavaScript was moved out of the oversized inline HTML script so the browser can load all controls reliably.
-
-Required project files:
-- index.html
-- app.js
-- package.json
-- netlify.toml
-- netlify/functions/upload-pdf.mjs
-- netlify/functions/get-pdf.mjs
-
+Replace the files in your GitHub repository with the matching files in this folder.
 Do not upload node_modules.
-After committing, wait for the Netlify deploy to show Published, then press Ctrl+F5.
+
+After committing to GitHub, Netlify will redeploy automatically.
+
+PDF import choices:
+1. Styled HTML Article - searchable and editable; optionally keeps the original PDF attached.
+2. Preserve Original PDF - opens the original PDF inside the article.
+
+The direct Netlify Function upload is limited to PDFs of approximately 4 MB.
